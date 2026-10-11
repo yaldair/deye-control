@@ -1,0 +1,537 @@
+[
+    {
+        "id": "f14a6f61cc2fdaf4",
+        "type": "tab",
+        "label": "EMHASS → Deye (remote)",
+        "disabled": false,
+        "info": "EMHASS → Deye via Remote Control (registers 1100+), zonder YamBMS.\n\nNative TOU (één vaste tabel, eenmalig handmatig ingesteld) is de basis.\nRemote neemt alleen over bij netladen, verkopen en hold.\nDe flow schrijft NOOIT naar de TOU-tabel of andere persistente instellingen.\n\nStart altijd met DRY_RUN = true en de executor UIT. Zie README.",
+        "env": [
+            {
+                "name": "DRY_RUN",
+                "value": "true",
+                "type": "bool"
+            },
+            {
+                "name": "RC_ENABLED_AT_START",
+                "value": "false",
+                "type": "bool"
+            },
+            {
+                "name": "ENT_FC_SOC",
+                "value": "sensor.soc_batt_forecast",
+                "type": "str"
+            },
+            {
+                "name": "ENT_FC_BATT",
+                "value": "sensor.p_batt_forecast",
+                "type": "str"
+            },
+            {
+                "name": "ENT_FC_GRID",
+                "value": "sensor.p_grid_forecast",
+                "type": "str"
+            },
+            {
+                "name": "ENT_FC_LOAD",
+                "value": "sensor.p_load_forecast",
+                "type": "str"
+            },
+            {
+                "name": "ENT_FC_PV",
+                "value": "sensor.p_pv_forecast",
+                "type": "str"
+            },
+            {
+                "name": "ENT_BATT_SOC",
+                "value": "sensor.deye_battery_soc",
+                "type": "str"
+            },
+            {
+                "name": "RC_ENT_MODE",
+                "value": "select.deye_rc_mode",
+                "type": "str"
+            },
+            {
+                "name": "RC_ENT_WATCHDOG",
+                "value": "number.deye_rc_watchdog",
+                "type": "str"
+            },
+            {
+                "name": "RC_ENT_SIDE",
+                "value": "select.deye_rc_side",
+                "type": "str"
+            },
+            {
+                "name": "RC_ENT_BATT_MODE",
+                "value": "select.deye_rc_battery_mode",
+                "type": "str"
+            },
+            {
+                "name": "RC_ENT_POWER",
+                "value": "number.deye_rc_battery_power",
+                "type": "str"
+            },
+            {
+                "name": "RC_ENT_SOC",
+                "value": "number.deye_rc_soc",
+                "type": "str"
+            },
+            {
+                "name": "RC_OPT_ON",
+                "value": "On",
+                "type": "str"
+            },
+            {
+                "name": "RC_OPT_OFF",
+                "value": "Off",
+                "type": "str"
+            },
+            {
+                "name": "RC_OPT_SIDE_BATT",
+                "value": "Battery",
+                "type": "str"
+            },
+            {
+                "name": "RC_OPT_POWER",
+                "value": "Power",
+                "type": "str"
+            },
+            {
+                "name": "RC_OPT_POWER_SOC",
+                "value": "Power+SOC",
+                "type": "str"
+            },
+            {
+                "name": "W_PER_PCT",
+                "value": "120",
+                "type": "num"
+            },
+            {
+                "name": "MAX_PCT",
+                "value": "42",
+                "type": "num"
+            },
+            {
+                "name": "MAX_CHARGE_W",
+                "value": "5000",
+                "type": "num"
+            },
+            {
+                "name": "SOC_MIN",
+                "value": "15",
+                "type": "num"
+            },
+            {
+                "name": "SOC_MAX_CHARGE",
+                "value": "95",
+                "type": "num"
+            },
+            {
+                "name": "HOLD_VIA_REMOTE",
+                "value": "true",
+                "type": "bool"
+            },
+            {
+                "name": "RC_LIMITED_PV",
+                "value": "false",
+                "type": "bool"
+            },
+            {
+                "name": "RC_PARTIAL_DISCHARGE",
+                "value": "false",
+                "type": "bool"
+            },
+            {
+                "name": "RC_WATCHDOG_S",
+                "value": "300",
+                "type": "num"
+            },
+            {
+                "name": "RC_KEEPALIVE_S",
+                "value": "60",
+                "type": "num"
+            },
+            {
+                "name": "RC_RESEND_S",
+                "value": "15",
+                "type": "num"
+            },
+            {
+                "name": "PLAN_STALE_MIN",
+                "value": "10",
+                "type": "num"
+            },
+            {
+                "name": "CONTROL_LEAD_S",
+                "value": "90",
+                "type": "num"
+            },
+            {
+                "name": "DEADBAND_W",
+                "value": "100",
+                "type": "num"
+            },
+            {
+                "name": "PV_TOLERANCE_W",
+                "value": "250",
+                "type": "num"
+            },
+            {
+                "name": "SELL_MARGIN_PCT",
+                "value": "1",
+                "type": "num"
+            },
+            {
+                "name": "MIN_PCT",
+                "value": "1",
+                "type": "num"
+            },
+            {
+                "name": "TZ_NAME",
+                "value": "Europe/Amsterdam",
+                "type": "str"
+            },
+            {
+                "name": "STATE_PREFIX",
+                "value": "rc",
+                "type": "str"
+            }
+        ]
+    },
+    {
+        "id": "a4f8ab18179d7692",
+        "type": "comment",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "EMHASS → Deye Remote Control — configuratie via tabblad-eigenschappen → Environment variables. Begin met DRY_RUN = true.",
+        "info": "EMHASS → Deye via Remote Control (registers 1100+), zonder YamBMS.\n\nNative TOU (één vaste tabel, eenmalig handmatig ingesteld) is de basis.\nRemote neemt alleen over bij netladen, verkopen en hold.\nDe flow schrijft NOOIT naar de TOU-tabel of andere persistente instellingen.\n\nStart altijd met DRY_RUN = true en de executor UIT. Zie README.",
+        "x": 470,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "717361fa52372ebb",
+        "type": "comment",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "Stap 1-3: plan lezen, classificeren, gewenste stand (schrijft niets)",
+        "info": "",
+        "x": 350,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "b7848f7dc01a6a51",
+        "type": "inject",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "elke minuut",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "10",
+        "topic": "",
+        "x": 120,
+        "y": 160,
+        "wires": [
+            [
+                "38296ad3d0ed4efa"
+            ]
+        ]
+    },
+    {
+        "id": "46933a9b32c59761",
+        "type": "inject",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "simuleer tijdstip",
+        "props": [
+            {
+                "p": "control_now",
+                "v": "2026-10-11T03:14:00+02:00",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 130,
+        "y": 200,
+        "wires": [
+            [
+                "38296ad3d0ed4efa"
+            ]
+        ]
+    },
+    {
+        "id": "38296ad3d0ed4efa",
+        "type": "function",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "1 · Plan inlezen",
+        "func": "// ============================================================\n// 1 · PLAN INLEZEN\n// Leest de EMHASS-publish-sensoren uit de HA global context en zet\n// elke reeks om naar { tijdstempel: getal }. Schrijft niets.\n// Configuratie: dubbelklik het tabblad → Environment variables.\n// ============================================================\nconst E = (k, d) => { const v = env.get(k); return (v === undefined || v === null || v === '') ? d : v; };\nfunction haStates() {\n    const ha = global.get('homeassistant'); if (!ha) return {};\n    const srv = ha.homeAssistant || Object.values(ha)[0];\n    return (srv && srv.states) || {};\n}\n\nconst ENT = {\n    soc:    E('ENT_FC_SOC',   'sensor.soc_batt_forecast'),\n    batt:   E('ENT_FC_BATT',  'sensor.p_batt_forecast'),\n    grid:   E('ENT_FC_GRID',  'sensor.p_grid_forecast'),\n    load:   E('ENT_FC_LOAD',  'sensor.p_load_forecast'),\n    pv:     E('ENT_FC_PV',    'sensor.p_pv_forecast'),\n    socNow: E('ENT_BATT_SOC', 'sensor.deye_battery_soc'),\n};\n// EMHASS zet de reeks in een attribuut; bekende namen eerst, anders het eerste array met 'date'\nconst PREFERRED = ['battery_scheduled_soc', 'battery_scheduled_power', 'forecasts'];\n\nfunction seriesOf(entity) {\n    const out = {};\n    const a = entity && entity.attributes;\n    if (!a) return out;\n    let arr = null;\n    for (const k of PREFERRED) if (Array.isArray(a[k])) { arr = a[k]; break; }\n    if (!arr) arr = Object.values(a).find(v => Array.isArray(v) && v.length && v[0] && v[0].date !== undefined) || [];\n    for (const it of arr) {\n        if (!it || it.date === undefined) continue;\n        const k = Object.keys(it).find(x => x !== 'date' && it[x] !== null && it[x] !== '' && Number.isFinite(Number(it[x])));\n        if (k) out[it.date] = Number(it[k]);\n    }\n    return out;\n}\n\nconst S = haStates();\nconst series = {};\nconst missing = [];\nfor (const key of ['soc', 'batt', 'grid', 'load', 'pv']) {\n    series[key] = seriesOf(S[ENT[key]]);\n    if (!Object.keys(series[key]).length) missing.push(ENT[key]);\n}\n\n// soc, batt en grid zijn nodig; load en pv alleen voor de PV-laadclassificatie\nconst missingReq = missing.filter(e => [ENT.soc, ENT.batt, ENT.grid].includes(e));\nif (missingReq.length) {\n    node.status({ fill: 'red', shape: 'ring', text: `geen data: ${missingReq.join(', ')}` });\n    node.warn(`Plan onvolledig, cyclus overgeslagen. Ontbrekend: ${missingReq.join(', ')}`);\n    return null;\n}\n\n// Gemeten SOC heeft voorkeur; anders de state van de SOC-forecastsensor\nlet currentSoc = parseFloat(S[ENT.socNow] && S[ENT.socNow].state);\nif (!Number.isFinite(currentSoc)) currentSoc = parseFloat(S[ENT.soc] && S[ENT.soc].state);\n\nmsg.payload = { series, current_soc: Number.isFinite(currentSoc) ? currentSoc : null };\nnode.status({\n    fill: missing.length ? 'yellow' : 'green', shape: 'dot',\n    text: `${Object.keys(series.batt).length} kwartieren` + (missing.length ? ` (zonder ${missing.join(', ')})` : '')\n});\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 180,
+        "wires": [
+            [
+                "85a739dd36f19fcb"
+            ]
+        ]
+    },
+    {
+        "id": "85a739dd36f19fcb",
+        "type": "function",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "2 · Classificeren + segmenteren",
+        "func": "// ============================================================\n// 2 · CLASSIFICEREN + SEGMENTEREN\n// Per kwartier: wat wil EMHASS met de accu (charge / discharge / sell / hold)\n// en waar komt de energie vandaan. Opeenvolgende gelijke kwartieren worden\n// segmenten; het segment van het stuurkwartier gaat door naar stap 3.\n// Tekens (EMHASS): p_batt > 0 = ontladen, p_grid > 0 = import.\n// ============================================================\nconst E = (k, d) => { const v = env.get(k); return (v === undefined || v === null || v === '') ? d : v; };\nconst N = (k, d) => { const v = Number(E(k, d)); return Number.isFinite(v) ? v : d; };\n\nconst CFG = {\n    deadband: N('DEADBAND_W', 100),        // |p| hieronder telt als 0\n    maxChargeW: N('MAX_CHARGE_W', 5000),   // laden boven 90% hiervan = 'max_charge'\n    tolerance: N('PV_TOLERANCE_W', 250),   // marge bij vergelijken laadvermogen met PV-surplus\n    leadS: N('CONTROL_LEAD_S', 90),        // zoveel s vóór een kwartier begint, geldt dat kwartier al\n    tz: E('TZ_NAME', 'Europe/Amsterdam'),\n};\nconst Q = 15 * 60000;\nconst P = msg.payload || {};\nconst S = P.series || {};\n\nconst num = v => (v === undefined || v === null || v === '' || !Number.isFinite(Number(v))) ? null : Number(v);\n// Op epoch-ms, zodat notatieverschillen tussen sensoren niet uitmaken\nconst byMs = obj => {\n    const r = {};\n    for (const [k, v] of Object.entries(obj || {})) { const t = Date.parse(k); if (Number.isFinite(t)) r[t] = v; }\n    return r;\n};\nconst ser = { batt: byMs(S.batt), grid: byMs(S.grid), load: byMs(S.load), pv: byMs(S.pv), soc: byMs(S.soc) };\nconst allMs = [...new Set([...Object.keys(ser.batt), ...Object.keys(ser.grid), ...Object.keys(ser.soc)].map(Number))]\n    .sort((a, b) => a - b);\nconst hhmm = t => new Intl.DateTimeFormat('nl-NL', { timeZone: CFG.tz, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(t));\n\n// ---------------------------------------------------------------- per kwartier\nconst points = allMs.map(t => {\n    const p = {\n        t, timestamp: new Date(t).toISOString(),\n        p_batt: num(ser.batt[t]), p_grid: num(ser.grid[t]), p_load: num(ser.load[t]),\n        p_pv: num(ser.pv[t]), p_soc: num(ser.soc[t]),\n    };\n    const charging    = p.p_batt !== null && p.p_batt < -CFG.deadband;\n    const discharging = p.p_batt !== null && p.p_batt >  CFG.deadband;\n    const importing   = p.p_grid !== null && p.p_grid >  CFG.deadband;\n    const exporting   = p.p_grid !== null && p.p_grid < -CFG.deadband;\n    const chargeW = charging ? -p.p_batt : 0;\n    const pvSurplus = (p.p_pv !== null && p.p_load !== null) ? Math.max(0, p.p_pv - p.p_load) : null;\n\n    p.intent = charging ? 'charge' : discharging ? (exporting ? 'sell' : 'discharge') : 'hold';\n    p.charge_mode = charging ? (chargeW >= CFG.maxChargeW * 0.9 ? 'max_charge' : 'normal_charge') : 'none';\n    p.charge_source = !charging ? 'none' : importing ? ((p.p_pv || 0) > CFG.deadband ? 'pv_and_grid' : 'grid') : 'pv';\n    p.grid_direction = importing ? 'import' : exporting ? 'export' : 'none';\n    p.grid_charge = charging && importing;\n    p.grid_sell = discharging && exporting;\n    p.discharge_partial = discharging && importing;   // accu levert een deel, de rest komt bewust uit het net\n\n    // Alleen bij laden uit PV: hoeveel van het surplus gaat naar de accu?\n    p.pv_charge_mode = 'none';\n    if (charging && p.charge_source === 'pv') {\n        if (pvSurplus === null) p.pv_charge_mode = 'unknown';\n        else if (!exporting) p.pv_charge_mode = 'all_available';               // alles in de accu\n        else if (p.charge_mode === 'max_charge') p.pv_charge_mode = 'excess_export'; // accu vol open, rest export\n        else if (chargeW + CFG.tolerance < pvSurplus) p.pv_charge_mode = 'limited';  // bewust minder laden, meer export\n        else p.pv_charge_mode = 'unknown';\n    }\n    return p;\n});\n\n// ---------------------------------------------------------------- smoothing\n// Eén los hold-kwartier tussen twee gelijke charge/discharge-kwartieren is meestal een\n// solver-artefact. Sell bewust uitgesloten. Het vermogen blijft dat van het kwartier zelf.\nconst COPY = ['intent', 'charge_mode', 'charge_source', 'pv_charge_mode', 'grid_direction',\n              'grid_charge', 'grid_sell', 'discharge_partial'];\nconst smooth = (target, src) => {\n    target.raw_intent = target.intent;\n    for (const k of COPY) target[k] = src[k];\n    target.smoothed = true;\n};\nconst lastIntent = flow.get('last_intent');\nif (points.length >= 2 && points[0].intent === 'hold'\n    && ['charge', 'discharge'].includes(lastIntent) && points[1].intent === lastIntent) {\n    smooth(points[0], points[1]);   // eerste kwartier heeft geen 'vorige' in de reeks\n}\nfor (let i = 1; i < points.length - 1; i++) {\n    const prev = points[i - 1], cur = points[i], next = points[i + 1];\n    if (cur.intent === 'hold' && prev.intent === next.intent && ['charge', 'discharge'].includes(prev.intent)) {\n        smooth(cur, prev);\n    }\n}\n\n// ---------------------------------------------------------------- segmenten\nconst KEYS = ['intent', 'charge_mode', 'charge_source', 'pv_charge_mode', 'grid_direction'];\nconst avg = vals => { vals = vals.filter(Number.isFinite); return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null; };\nconst segments = [];\nlet buf = [];\nconst flush = () => {\n    if (!buf.length) return;\n    const f = buf[0], l = buf[buf.length - 1];\n    segments.push({\n        start: f.timestamp, end: new Date(l.t + Q).toISOString(), start_ms: f.t, end_ms: l.t + Q,\n        duration_minutes: buf.length * 15,\n        intent: f.intent, charge_mode: f.charge_mode, charge_source: f.charge_source,\n        pv_charge_mode: f.pv_charge_mode, grid_direction: f.grid_direction,\n        grid_charge: f.grid_charge, grid_sell: f.grid_sell, discharge_partial: f.discharge_partial,\n        avg_p_batt: avg(buf.map(p => p.p_batt)),\n        end_soc: l.p_soc,\n        contains_smoothed: buf.some(p => p.smoothed),\n    });\n    buf = [];\n};\nfor (const p of points) {\n    const prev = buf[buf.length - 1];\n    if (prev && (p.t !== prev.t + Q || !KEYS.every(k => prev[k] === p[k]))) flush();   // ook splitsen bij gaten\n    buf.push(p);\n}\nflush();\n\n// ---------------------------------------------------------------- stuurkwartier\n// Elke minuut draaien; een kwartier geldt vanaf CONTROL_LEAD_S seconden vóór het begin.\nconst nowMs = msg.control_now ? Date.parse(msg.control_now) : Date.now();\nif (!Number.isFinite(nowMs)) { node.warn('control_now onleesbaar'); return null; }\nconst tCtl = Math.floor((nowMs + CFG.leadS * 1000) / Q) * Q;   // kwartiergrenzen: klopt voor hele-uur-tijdzones\nconst segment = segments.find(s => s.start_ms <= tCtl && s.end_ms > tCtl) || null;\nconst point = points.find(p => p.t === tCtl) || null;\n\nif (!msg.control_now && segment) flow.set('last_intent', segment.intent);   // simulatie laat de staat ongemoeid\n\nmsg.payload = {\n    control_ms: tCtl,\n    control_time: new Date(tCtl).toISOString(),\n    segment, point,\n    current_soc: P.current_soc ?? null,\n    segments, points,\n};\nnode.status(segment\n    ? { fill: 'green', shape: 'dot', text: `${hhmm(tCtl)} → ${segment.intent}${segment.pv_charge_mode !== 'none' ? '/' + segment.pv_charge_mode : ''} (${segments.length} segm.)` }\n    : { fill: 'yellow', shape: 'ring', text: `${hhmm(tCtl)} → geen plan voor dit kwartier` });\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 180,
+        "wires": [
+            [
+                "3f53cbd8d24df4d6",
+                "6529da297255924e"
+            ]
+        ]
+    },
+    {
+        "id": "6529da297255924e",
+        "type": "debug",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "volledig plan",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "3f53cbd8d24df4d6",
+        "type": "function",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "3 · Gewenste stand",
+        "func": "// ============================================================\n// 3 · GEWENSTE STAND\n// Vertaalt het stuurkwartier naar één gewenste remote-stand:\n//   { on: false }                       -> native (TOU-basis: zelfverbruik / PV-laden)\n//   { on: true, bmode: 'power', ... }   -> accu vast vermogen (hold = 0 W)\n//   { on: true, bmode: 'power_soc', ...}-> vast vermogen tot doel-SOC (omvormer stopt zelf)\n// power in % van W_PER_PCT; + = ontladen, - = laden.\n// Uitgang 1 -> executor. Uitgang 2 -> debug (ook bij simulatie met msg.control_now).\n// ============================================================\nconst E = (k, d) => { const v = env.get(k); return (v === undefined || v === null || v === '') ? d : v; };\nconst N = (k, d) => { const v = Number(E(k, d)); return Number.isFinite(v) ? v : d; };\nconst B = (k, d) => { const v = E(k, d); return typeof v === 'boolean' ? v : String(v).toLowerCase() === 'true'; };\n\nconst CFG = {\n    wPerPct: N('W_PER_PCT', 120),               // W per % setpoint (Deye: nominaal vermogen / 100)\n    maxPct: N('MAX_PCT', 42),                   // plafond setpoint; niet hoger dan de max in je registerdefinitie\n    minPct: N('MIN_PCT', 1),                    // kleinere setpoints -> 0\n    socMin: N('SOC_MIN', 15),                   // ondergrens bij ontladen via remote\n    socMaxCharge: N('SOC_MAX_CHARGE', 95),      // bovengrens bij laden via remote\n    sellMargin: N('SELL_MARGIN_PCT', 1),        // ontladen knijpt af vlak bij het doel -> doel iets lager\n    holdViaRemote: B('HOLD_VIA_REMOTE', true),\n    limitedPv: B('RC_LIMITED_PV', false),\n    partialDischarge: B('RC_PARTIAL_DISCHARGE', false),\n};\nconst clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));\nconst r1 = v => Math.round(v * 10) / 10;\n\nconst P = msg.payload || {};\nconst seg = P.segment, pt = P.point;\nconst cur = Number.isFinite(P.current_soc) ? P.current_soc : null;\nconst OFF = why => ({ on: false, why });\n\nfunction decide() {\n    if (!seg || !pt) return OFF('geen plan voor dit kwartier → native');\n\n    const pBatt = Number.isFinite(pt.p_batt) ? pt.p_batt : 0;\n    let pct = r1(clamp(pBatt / CFG.wPerPct, -CFG.maxPct, CFG.maxPct));\n    if (Math.abs(pct) < CFG.minPct) pct = 0;\n    const W = Math.round(Math.abs(pct) * CFG.wPerPct);\n\n    const endSoc = Number(seg.end_soc);\n    const chargeTo = Number.isFinite(endSoc) ? clamp(Math.ceil(endSoc), CFG.socMin, CFG.socMaxCharge) : CFG.socMaxCharge;\n    const dischargeTo = Number.isFinite(endSoc) ? clamp(Math.floor(endSoc) - CFG.sellMargin, CFG.socMin, 100) : CFG.socMin;\n\n    const idle = why => CFG.holdViaRemote\n        ? { on: true, bmode: 'power', power: 0, soc: null, why }\n        : OFF(why + ' → native');\n    const charge = (label) => (cur !== null && cur >= chargeTo)\n        ? idle(`${label}: doel ${chargeTo}% al bereikt`)\n        : { on: true, bmode: 'power_soc', power: pct, soc: chargeTo, why: `${label} ${W} W tot ${chargeTo}%` };\n    const discharge = (label) => (cur !== null && cur <= dischargeTo)\n        ? idle(`${label}: doel ${dischargeTo}% al bereikt`)\n        : { on: true, bmode: 'power_soc', power: pct, soc: dischargeTo, why: `${label} ${W} W tot ${dischargeTo}%` };\n\n    // Netladen\n    if (seg.intent === 'charge' && seg.grid_charge) {\n        return pct < 0 ? charge('netladen') : idle('netlaad-segment, dit kwartier 0 W');\n    }\n    // Verkopen\n    if (seg.intent === 'sell') {\n        return pct > 0 ? discharge('verkopen') : idle('verkoop-segment, dit kwartier 0 W');\n    }\n    // Hold\n    if (seg.intent === 'hold') return idle('hold (accu 0 W)');\n\n    // Optioneel: bewust minder PV laden dan beschikbaar (rest export)\n    if (seg.intent === 'charge' && seg.pv_charge_mode === 'limited' && CFG.limitedPv && pct < 0) {\n        return charge('begrensd PV-laden');\n    }\n    // Optioneel: accu levert een deel van de load, rest bewust uit het net\n    if (seg.intent === 'discharge' && seg.discharge_partial && CFG.partialDischarge && pct > 0) {\n        return discharge('deel-ontladen');\n    }\n\n    const sub = seg.pv_charge_mode && seg.pv_charge_mode !== 'none' ? '/' + seg.pv_charge_mode\n              : seg.discharge_partial ? '/partial' : '';\n    return OFF(`${seg.intent}${sub} → native`);\n}\n\nconst desired = decide();\nconst simulate = !!msg.control_now;\n\nconst summary = {\n    control_time: P.control_time, simulate,\n    intent: seg ? seg.intent : null, p_batt: pt ? pt.p_batt : null, p_grid: pt ? pt.p_grid : null,\n    end_soc: seg ? seg.end_soc : null, current_soc: cur, desired,\n};\n// Plan publiceren voor andere flows (dashboards, eigen uitbreidingen)\nif (!simulate) global.set(`${E('STATE_PREFIX', 'rc')}_plan`, Object.assign({ ts: Date.now(), segment: seg || null }, summary));\n\nnode.status({\n    fill: desired.on ? 'green' : 'blue', shape: simulate ? 'ring' : 'dot',\n    text: `${simulate ? '[SIM] ' : ''}${desired.on ? 'remote' : 'native'} | ${desired.why}`\n});\n\nif (simulate) return [null, { payload: summary, topic: 'simulatie' }];\nreturn [{ topic: 'plan', desired }, { payload: summary, topic: 'plan' }];\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 180,
+        "wires": [
+            [
+                "0e288a539987ee18"
+            ],
+            [
+                "5c616fd781563aeb"
+            ]
+        ]
+    },
+    {
+        "id": "5c616fd781563aeb",
+        "type": "debug",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "gewenste stand",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "f010f76991b53461",
+        "type": "comment",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "Stap 4: remote executor — 1 write per tick, watchdog, terugval naar native",
+        "info": "",
+        "x": 380,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "b7384457c0c9850e",
+        "type": "inject",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "tick 5 s",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "15",
+        "topic": "tick",
+        "x": 120,
+        "y": 360,
+        "wires": [
+            [
+                "0e288a539987ee18"
+            ]
+        ]
+    },
+    {
+        "id": "44374a92e75fe770",
+        "type": "inject",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "remote AAN",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "enable",
+        "x": 120,
+        "y": 400,
+        "wires": [
+            [
+                "0e288a539987ee18"
+            ]
+        ]
+    },
+    {
+        "id": "78875c1c85193706",
+        "type": "inject",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "remote UIT",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "disable",
+        "x": 120,
+        "y": 440,
+        "wires": [
+            [
+                "0e288a539987ee18"
+            ]
+        ]
+    },
+    {
+        "id": "0e288a539987ee18",
+        "type": "function",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "4 · Remote executor",
+        "func": "// ============================================================\n// 4 · REMOTE EXECUTOR — Deye Remote Control (registers 1100+, RAM)\n// Ingangen:\n//   topic 'plan'     gewenste stand uit stap 3\n//   topic 'tick'     elke 5 s: reconcile + keepalive + verouderingscheck\n//   topic 'enable' / 'disable'   handmatige schakelaar\n// Uitgang 1: HA service call (alleen als DRY_RUN = false)\n// Uitgang 2: DRY_RUN-log (wat er geschreven zóu worden)\n//\n// Principe: native (TOU) is de basis. Remote alleen voor afwijkingen.\n// Valt Node-RED of HA weg, dan loopt de watchdog af en valt de Deye terug op native.\n// Maximaal één write per tick, in vaste volgorde, met read-back vóór de volgende stap.\n// ============================================================\nconst E = (k, d) => { const v = env.get(k); return (v === undefined || v === null || v === '') ? d : v; };\nconst N = (k, d) => { const v = Number(E(k, d)); return Number.isFinite(v) ? v : d; };\nconst B = (k, d) => { const v = E(k, d); return typeof v === 'boolean' ? v : String(v).toLowerCase() === 'true'; };\nfunction haStates() {\n    const ha = global.get('homeassistant'); if (!ha) return {};\n    const srv = ha.homeAssistant || Object.values(ha)[0];\n    return (srv && srv.states) || {};\n}\n\nconst ENT = {\n    mode:  E('RC_ENT_MODE',      'select.deye_rc_mode'),          // 1100\n    wd:    E('RC_ENT_WATCHDOG',  'number.deye_rc_watchdog'),      // 1101\n    side:  E('RC_ENT_SIDE',      'select.deye_rc_side'),          // 1104\n    bmode: E('RC_ENT_BATT_MODE', 'select.deye_rc_battery_mode'),  // 1105\n    power: E('RC_ENT_POWER',     'number.deye_rc_battery_power'), // 1109\n    soc:   E('RC_ENT_SOC',       'number.deye_rc_soc'),           // 1110\n};\nconst OPT = {\n    on:     E('RC_OPT_ON',        'On'),\n    off:    E('RC_OPT_OFF',       'Off'),\n    side:   E('RC_OPT_SIDE_BATT', 'Battery'),\n    power:  E('RC_OPT_POWER',     'Power'),\n    powerSoc: E('RC_OPT_POWER_SOC', 'Power+SOC'),\n};\nconst BMODE = { power: OPT.power, power_soc: OPT.powerSoc };\nconst CFG = {\n    wd: N('RC_WATCHDOG_S', 300),\n    keepaliveMs: N('RC_KEEPALIVE_S', 60) * 1000,\n    resendMs: N('RC_RESEND_S', 15) * 1000,\n    staleMs: N('PLAN_STALE_MIN', 10) * 60000,\n    wPerPct: N('W_PER_PCT', 120),\n    dry: B('DRY_RUN', true),\n};\n\nconst now = Date.now();\nconst S = haStates();\n// In DRY_RUN houden we een gesimuleerde stand bij, zodat de log de echte volgorde laat zien\nconst sim = CFG.dry ? (context.get('sim') || {}) : null;\n\nfunction st(id) {\n    if (sim && Object.prototype.hasOwnProperty.call(sim, id)) return String(sim[id]);\n    const s = S[id]; return s ? s.state : undefined;\n}\nfunction num(id) { const v = parseFloat(st(id)); return Number.isFinite(v) ? v : null; }\nfunction same(id, want) {\n    const got = st(id);\n    if (id.startsWith('select.')) return got === String(want);\n    return Math.abs(parseFloat(got) - Number(want)) < 0.051;\n}\nfunction svc(id, value) {\n    const domain = id.split('.')[0], isSel = domain === 'select';\n    const service = isSel ? 'select_option' : 'set_value';\n    return { payload: { action: `${domain}.${service}`, domain, service, target: { entity_id: [id] },\n                        data: isSel ? { option: String(value) } : { value: Number(value) } },\n             topic: id };\n}\n\n// ---------------------------------------------------------------- dispatcher\nconst topic = String(msg.topic || '');\nif (flow.get('rc_enabled') === undefined) flow.set('rc_enabled', B('RC_ENABLED_AT_START', false));\nif (topic === 'enable')  { flow.set('rc_enabled', true);  node.warn('Remote executor AAN'); }\nif (topic === 'disable') { flow.set('rc_enabled', false); node.warn('Remote executor UIT'); }\nif (topic === 'plan' && msg.desired) context.set('desired', Object.assign({}, msg.desired, { planTs: now }));\n\nconst PREFIX = E('STATE_PREFIX', 'rc');\nconst enabled = flow.get('rc_enabled') === true;\n// Hook voor eigen logica (bijv. balanceren/rebulk via de BMS): zet global <prefix>_inhibit\n// op een tekst of true, en de executor laat de Deye native tot je hem weer leegmaakt.\nconst inhibit = global.get(`${PREFIX}_inhibit`);\nlet des = context.get('desired') || { on: false, why: 'nog geen plan' };\nif (!enabled) des = { on: false, why: 'executor uit' };\nelse if (inhibit) des = { on: false, why: `geblokkeerd: ${inhibit === true ? 'inhibit' : inhibit}` };\nelse if (des.on && now - (des.planTs || 0) > CFG.staleMs) des = { on: false, why: 'plan verouderd → native' };\n\n// Live: zonder alle RC-entiteiten in HA niets schrijven.\n// DRY_RUN mag wél doorlopen (handig vóór de registers bestaan); ontbrekende mode telt dan als 'uit'.\nconst missing = Object.values(ENT).filter(id => S[id] === undefined);\nif (CFG.dry && st(ENT.mode) === undefined) { sim[ENT.mode] = OPT.off; context.set('sim', sim); }\nif (!CFG.dry && missing.length) {\n    node.status({ fill: 'red', shape: 'ring', text: `entiteit ontbreekt: ${missing[0]}${missing.length > 1 ? ` (+${missing.length - 1})` : ''}` });\n    return null;\n}\n\n// ---------------------------------------------------------------- reconcile (max. 1 write per tick)\nfunction reconcile(d) {\n    const sent = context.get('sent') || {};\n    const fresh = (id, v) => sent[id] && sent[id].v === v && now - sent[id].t < CFG.resendMs;\n    const send = (id, v) => {\n        sent[id] = { v, t: now }; context.set('sent', sent);\n        if (CFG.dry) {\n            sim[id] = v; context.set('sim', sim);\n            return [null, { payload: `[DRY-RUN] ${id} → ${v}`, topic: 'dry_run', why: d.why }];\n        }\n        return [svc(id, v), null];\n    };\n\n    if (!d.on) {\n        if (st(ENT.mode) !== OPT.off && !fresh(ENT.mode, OPT.off)) return send(ENT.mode, OPT.off);\n        return null;\n    }\n    // volgorde: 1104 -> 1105 -> 1110 -> 1109 -> 1101 -> 1100 (nooit aan in AC-modus)\n    const steps = [[ENT.side, OPT.side], [ENT.bmode, BMODE[d.bmode]]];\n    if (d.soc !== null && d.soc !== undefined) steps.push([ENT.soc, d.soc]);\n    steps.push([ENT.power, d.power]);\n    for (const [id, v] of steps) {\n        if (!same(id, v)) return fresh(id, v) ? null : send(id, v);   // wacht op read-back\n    }\n    if (st(ENT.mode) !== OPT.on) {\n        const wdOk = Math.abs((num(ENT.wd) ?? -1) - CFG.wd) <= 1;\n        if (!wdOk) return fresh(ENT.wd, CFG.wd) ? null : send(ENT.wd, CFG.wd);\n        if (!fresh(ENT.mode, OPT.on)) { context.set('lastKa', now); return send(ENT.mode, OPT.on); }\n        return null;\n    }\n    // keepalive: watchdog herschrijven; wisselende waarde garandeert een echte write\n    if (now - (context.get('lastKa') || 0) >= CFG.keepaliveMs) {\n        const k = !context.get('kaToggle'); context.set('kaToggle', k);\n        context.set('lastKa', now);\n        return send(ENT.wd, k ? CFG.wd + 1 : CFG.wd);\n    }\n    return null;\n}\n\nconst out = reconcile(des);\n\n// ---------------------------------------------------------------- status\nconst active = st(ENT.mode) === OPT.on;\nglobal.set(`${PREFIX}_state`, {\n    enabled, dry_run: CFG.dry, active, want_on: des.on, why: des.why,\n    pct: des.power ?? null, w: des.power != null ? Math.round(des.power * CFG.wPerPct) : null,\n    soc_target: des.soc ?? null, ts: now,\n});\nnode.status({\n    fill: !enabled ? 'grey' : active ? 'green' : des.on ? 'yellow' : 'blue',\n    shape: active ? 'dot' : 'ring',\n    text: `${CFG.dry ? '[DRY] ' : ''}${enabled ? '' : '[UIT] '}${active ? 'REMOTE' : 'native'} | ${des.why}`\n});\nreturn out;\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1060,
+        "y": 380,
+        "wires": [
+            [
+                "c6cc91c4ad085992",
+                "1f487d6e0c59a4c4"
+            ],
+            [
+                "dfcf3d3582a69d28"
+            ]
+        ]
+    },
+    {
+        "id": "c6cc91c4ad085992",
+        "type": "api-call-service",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "Deye RC (HA action)",
+        "server": "",
+        "version": 7,
+        "debugenabled": false,
+        "action": "",
+        "floorId": [],
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "labelId": [],
+        "data": "",
+        "dataType": "jsonata",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "blockInputOverrides": false,
+        "domain": "",
+        "service": "",
+        "x": 1310,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1f487d6e0c59a4c4",
+        "type": "debug",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "live writes",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1290,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "dfcf3d3582a69d28",
+        "type": "debug",
+        "z": "f14a6f61cc2fdaf4",
+        "name": "DRY-RUN writes",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1300,
+        "y": 440,
+        "wires": []
+    }
+]
