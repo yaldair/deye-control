@@ -1,0 +1,588 @@
+[
+    {
+        "id": "7d417cf5252976f0",
+        "type": "tab",
+        "label": "RC test (Deye remote)",
+        "disabled": false,
+        "info": "Testflow voor Deye Remote Control (registers 1100+), accuzijde.\nHoort bij de flow 'EMHASS → Deye (remote)', maar werkt los daarvan.\n\nVoorbereiding:\n1. Zet alles uit wat de Deye aanstuurt (remote executor UIT, andere automations).\n2. Kies je HA-server in 'HA call (RC)'.\n3. Vul de tab-variabelen in (dubbelklik het tabblad). Zelfde namen als de hoofdflow.\n4. Begin met T0 (alleen lezen) en controleer of alle waarden kloppen.\n\nVolgorde: T0 → T1 → T2 → T3 → T4a/b/c → (KEEPALIVE_VIA aanpassen indien nodig) → T5a/b/c → T6.\n\nElke test: stuurzijde = accu vóór 1100 aan, watchdog vlak vóór aanzetten, read-back na elke write,\nna afloop altijd 1100 uit en 1109 = 0. STOP is altijd veilig.\nVeiligheidsstop bij |accuvermogen| > SAFETY_MAX_W tijdens een test.\n'Log tonen' zet resultaten + volledige log in de debug-sidebar en in rc-test.log.",
+        "env": [
+            {
+                "name": "RC_ENT_MODE",
+                "value": "select.deye_rc_mode",
+                "type": "str"
+            },
+            {
+                "name": "RC_ENT_WATCHDOG",
+                "value": "number.deye_rc_watchdog",
+                "type": "str"
+            },
+            {
+                "name": "RC_ENT_SIDE",
+                "value": "select.deye_rc_side",
+                "type": "str"
+            },
+            {
+                "name": "RC_ENT_BATT_MODE",
+                "value": "select.deye_rc_battery_mode",
+                "type": "str"
+            },
+            {
+                "name": "RC_ENT_POWER",
+                "value": "number.deye_rc_battery_power",
+                "type": "str"
+            },
+            {
+                "name": "RC_ENT_SOC",
+                "value": "number.deye_rc_soc",
+                "type": "str"
+            },
+            {
+                "name": "RC_OPT_ON",
+                "value": "On",
+                "type": "str"
+            },
+            {
+                "name": "RC_OPT_OFF",
+                "value": "Off",
+                "type": "str"
+            },
+            {
+                "name": "RC_OPT_SIDE_BATT",
+                "value": "Battery",
+                "type": "str"
+            },
+            {
+                "name": "RC_OPT_POWER",
+                "value": "Power",
+                "type": "str"
+            },
+            {
+                "name": "RC_OPT_POWER_SOC",
+                "value": "Power+SOC",
+                "type": "str"
+            },
+            {
+                "name": "ENT_BATT_POWER",
+                "value": "sensor.deye_battery_power",
+                "type": "str"
+            },
+            {
+                "name": "BATT_POWER_SIGN",
+                "value": "1",
+                "type": "num"
+            },
+            {
+                "name": "ENT_BATT_SOC",
+                "value": "sensor.deye_battery_soc",
+                "type": "str"
+            },
+            {
+                "name": "ENT_GRID_POWER",
+                "value": "",
+                "type": "str"
+            },
+            {
+                "name": "ENT_SHUNT_POWER",
+                "value": "",
+                "type": "str"
+            },
+            {
+                "name": "SHUNT_POWER_SIGN",
+                "value": "-1",
+                "type": "num"
+            },
+            {
+                "name": "DCL_ENTITY",
+                "value": "",
+                "type": "str"
+            },
+            {
+                "name": "DCL_TEST_A",
+                "value": "10",
+                "type": "num"
+            },
+            {
+                "name": "W_PER_PCT",
+                "value": "120",
+                "type": "num"
+            },
+            {
+                "name": "SAFETY_MAX_W",
+                "value": "1500",
+                "type": "num"
+            },
+            {
+                "name": "READBACK_S",
+                "value": "8",
+                "type": "num"
+            },
+            {
+                "name": "KEEPALIVE_VIA",
+                "value": "watchdog",
+                "type": "str"
+            },
+            {
+                "name": "STATE_PREFIX",
+                "value": "rc",
+                "type": "str"
+            }
+        ]
+    },
+    {
+        "id": "848a75c371a21026",
+        "type": "comment",
+        "z": "7d417cf5252976f0",
+        "name": "LEES MIJ: 1) alle Deye-sturing UIT  2) server kiezen in \"HA call (RC)\"  3) tab-variabelen invullen  4) T0 eerst  5) STOP = altijd veilig",
+        "info": "Testflow voor Deye Remote Control (registers 1100+), accuzijde.\nHoort bij de flow 'EMHASS → Deye (remote)', maar werkt los daarvan.\n\nVoorbereiding:\n1. Zet alles uit wat de Deye aanstuurt (remote executor UIT, andere automations).\n2. Kies je HA-server in 'HA call (RC)'.\n3. Vul de tab-variabelen in (dubbelklik het tabblad). Zelfde namen als de hoofdflow.\n4. Begin met T0 (alleen lezen) en controleer of alle waarden kloppen.\n\nVolgorde: T0 → T1 → T2 → T3 → T4a/b/c → (KEEPALIVE_VIA aanpassen indien nodig) → T5a/b/c → T6.\n\nElke test: stuurzijde = accu vóór 1100 aan, watchdog vlak vóór aanzetten, read-back na elke write,\nna afloop altijd 1100 uit en 1109 = 0. STOP is altijd veilig.\nVeiligheidsstop bij |accuvermogen| > SAFETY_MAX_W tijdens een test.\n'Log tonen' zet resultaten + volledige log in de debug-sidebar en in rc-test.log.",
+        "x": 560,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "fd299032b4073212",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "T0 nulmeting (alleen lezen)",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "T0",
+        "x": 200,
+        "y": 100,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "b06978d1b65c8875",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "T1 watchdog 60 s, 0 W",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "T1",
+        "x": 200,
+        "y": 150,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "e16258cdce2dd974",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "T2 teken ±5 %",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "T2",
+        "x": 200,
+        "y": 200,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "d7116fce96d55284",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "T3 schaal ±10 %",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "T3",
+        "x": 200,
+        "y": 250,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "3cdd5fe660c9da8d",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "T4a keepalive: 1101",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "T4a",
+        "x": 200,
+        "y": 300,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "3fde552d6448d012",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "T4b keepalive: 1109",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "T4b",
+        "x": 200,
+        "y": 350,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "7502dcbadfbab2a8",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "T4c keepalive: 1100",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "T4c",
+        "x": 200,
+        "y": 400,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "fd80f671f824faf7",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "T5a vermogen+SOC: ontladen tot SOC−3",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "T5a",
+        "x": 200,
+        "y": 450,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "e8639e310100c090",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "T5b vermogen+SOC: laden tot SOC+1",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "T5b",
+        "x": 200,
+        "y": 500,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "c9ddae171f50ebbf",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "T5c tegenstrijdig → 0 W",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "T5c",
+        "x": 200,
+        "y": 550,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "2d7b2370fdb487c9",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "T6 BMS-limiet wint",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "T6",
+        "x": 200,
+        "y": 600,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "a56efcb1b412d6a1",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "■ STOP (1100 uit, 1109 = 0)",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "STOP",
+        "x": 200,
+        "y": 680,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "7b52c4d053913aea",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "Log tonen",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "log",
+        "x": 200,
+        "y": 730,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "6d5537a503e71ac0",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "Log wissen",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "clear",
+        "x": 200,
+        "y": 780,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "d918a605336a54ad",
+        "type": "inject",
+        "z": "7d417cf5252976f0",
+        "name": "tick 5 s (status + bewaking)",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "3",
+        "topic": "tick",
+        "x": 200,
+        "y": 840,
+        "wires": [
+            [
+                "48b0f3a7034b0dbe"
+            ]
+        ]
+    },
+    {
+        "id": "48b0f3a7034b0dbe",
+        "type": "function",
+        "z": "7d417cf5252976f0",
+        "name": "RC testrunner",
+        "func": "// ============================================================================\n// RC testrunner – Deye Remote Control (registers 1100+), accuzijde\n// Ingang:  msg.topic = T0 | T1 | T2 | T3 | T4a | T4b | T4c | T5a | T5b | T5c | T6\n//                      | STOP | tick | log | clear\n// Uitgang 1: HA service calls (select.select_option / number.set_value)\n// Uitgang 2: resultaten + log (debug / bestand)\n// Elke write wordt via de HA global cache teruggelezen en gecontroleerd.\n// Configuratie: dubbelklik het tabblad → Environment variables.\n// ============================================================================\nconst E = (k, d) => { const v = env.get(k); return (v === undefined || v === null || v === '') ? d : v; };\nconst N = (k, d) => { const v = Number(E(k, d)); return Number.isFinite(v) ? v : d; };\n\nconst CFG = {\n  ent: {                                                    // RC-entiteiten (zie mysensors.py)\n    mode:  E('RC_ENT_MODE',      'select.deye_rc_mode'),          // 1100\n    wd:    E('RC_ENT_WATCHDOG',  'number.deye_rc_watchdog'),      // 1101\n    side:  E('RC_ENT_SIDE',      'select.deye_rc_side'),          // 1104\n    bmode: E('RC_ENT_BATT_MODE', 'select.deye_rc_battery_mode'),  // 1105\n    power: E('RC_ENT_POWER',     'number.deye_rc_battery_power'), // 1109  (+ = ontladen, - = laden)\n    soc:   E('RC_ENT_SOC',       'number.deye_rc_soc'),           // 1110\n  },\n  meas: {                                                   // metingen; pShunt/pGrid optioneel (leeg = overslaan)\n    pBatt:  E('ENT_BATT_POWER',  'sensor.deye_battery_power'),\n    soc:    E('ENT_BATT_SOC',    'sensor.deye_battery_soc'),\n    pGrid:  E('ENT_GRID_POWER',  ''),\n    pShunt: E('ENT_SHUNT_POWER', ''),\n  },\n  battSign:  N('BATT_POWER_SIGN', 1),     // 1 als je accusensor + = ontladen geeft, anders -1\n  shuntSign: N('SHUNT_POWER_SIGN', -1),   // idem voor een shunt (Victron SmartShunt: - = ontladen → -1)\n  dcl:       E('DCL_ENTITY', ''),         // optioneel: number-entiteit voor de BMS-ontlaadstroomgrens (T6 automatisch)\n  dclTestA:  N('DCL_TEST_A', 10),\n  readbackMs: N('READBACK_S', 8) * 1000,  // wachten na write voor read-back (add-on pollt elke ~5 s)\n  sampleMs: 5000,\n  maxAbsW:  N('SAFETY_MAX_W', 1500),      // veiligheidsstop: |accuvermogen| boven dit terwijl een test loopt\n  wPerPct:  N('W_PER_PCT', 120),          // nominaal omvormervermogen / 100\n  keepalive: E('KEEPALIVE_VIA', 'watchdog'), // na T4: 'watchdog' | 'power' | 'mode'\n  prefix:   E('STATE_PREFIX', 'rc'),      // om een draaiende remote executor te herkennen\n  timeScale: N('TEST_TIME_SCALE', 1),     // alleen voor offline testen\n};\nconst OPT = {\n  on:     E('RC_OPT_ON', 'On'),\n  off:    E('RC_OPT_OFF', 'Off'),\n  accu:   E('RC_OPT_SIDE_BATT', 'Battery'),\n  pwr:    E('RC_OPT_POWER', 'Power'),\n  pwrSoc: E('RC_OPT_POWER_SOC', 'Power+SOC'),\n};\n\n// ---------------------------------------------------------------- helpers\nfunction haStates() {\n  const ha = global.get('homeassistant');\n  if (!ha) return {};\n  const srv = ha.homeAssistant || Object.values(ha)[0];\n  return (srv && srv.states) || {};\n}\nfunction st(id) { if (!id) return undefined; const s = haStates()[id]; return s ? s.state : undefined; }\nfunction num(id) { const v = parseFloat(st(id)); return Number.isFinite(v) ? v : null; }\nfunction signed(id, sign) { const v = num(id); return v === null ? null : Math.round(v * sign); }\nfunction now() { return Date.now(); }\nfunction secSince(t) { return Math.round((now() - t) / 1000 / CFG.timeScale); }\nfunction avg(a) { const v = a.filter(x => x !== null && x !== undefined); return v.length ? Math.round(v.reduce((s, x) => s + x, 0) / v.length) : null; }\nfunction sleep(ms) { return new Promise(r => setTimeout(r, ms * CFG.timeScale)); }\n\nfunction log(txt, extra) {\n  const L = flow.get('rc_log') || [];\n  L.push(Object.assign({ t: new Date().toLocaleTimeString('nl-NL'), txt }, extra || {}));\n  while (L.length > 600) L.shift();\n  flow.set('rc_log', L);\n  node.warn('[RC] ' + txt);\n}\nfunction result(test, obj) {\n  const R = flow.get('rc_results') || {};\n  R[test] = Object.assign({ tijd: new Date().toLocaleString('nl-NL') }, obj);\n  flow.set('rc_results', R);\n  log(`RESULTAAT ${test}: ${JSON.stringify(obj)}`);\n}\nfunction svc(id, value) {\n  const domain = id.split('.')[0];\n  const isSel = domain === 'select';\n  const service = isSel ? 'select_option' : 'set_value';\n  return { payload: {\n    action: `${domain}.${service}`, domain, service,\n    target: { entity_id: [id] },\n    data: isSel ? { option: String(value) } : { value: Number(value) },\n  } };\n}\nfunction check(my) { if (context.get('runId') !== my) throw new Error('gestopt'); }\n\nasync function write(id, value, my) {\n  check(my);\n  node.send([svc(id, value), null]);\n  log(`schrijf ${id} = ${value}`);\n  await sleep(CFG.readbackMs);\n  check(my);\n  const got = st(id);\n  const g = parseFloat(got), v = Number(value);\n  const ok = id.startsWith('select.') ? got === String(value)\n           : id === CFG.ent.wd && st(CFG.ent.mode) === OPT.on\n             ? (g <= v && g >= v - 20)          // 1101 telt af zodra remote aan staat\n             : Math.abs(g - v) < 0.051;\n  log(`   read-back: ${got} ${ok ? 'OK' : '<< AFWIJKING'}`);\n  if (!ok) throw new Error(`read-back ${id}: verwacht ${value}, kreeg ${got}`);\n}\n\nfunction sample() {\n  return { mode: st(CFG.ent.mode), rc: num(CFG.ent.power),\n           pBatt: signed(CFG.meas.pBatt, CFG.battSign),\n           pShunt: CFG.meas.pShunt ? signed(CFG.meas.pShunt, CFG.shuntSign) : null,\n           pGrid: CFG.meas.pGrid ? num(CFG.meas.pGrid) : null,\n           soc: num(CFG.meas.soc) };\n}\nfunction fmt(s) {\n  return `mode ${s.mode} | rc ${s.rc}% | accu ${s.pBatt} W`\n    + (CFG.meas.pShunt ? ` | shunt ${s.pShunt} W` : '')\n    + (CFG.meas.pGrid ? ` | net ${s.pGrid} W` : '')\n    + ` | SOC ${s.soc}%`;\n}\nfunction guard(s) {\n  if (s.mode === OPT.on && s.pBatt !== null && Math.abs(s.pBatt) > CFG.maxAbsW)\n    throw new Error(`VEILIGHEIDSSTOP: |accu| ${s.pBatt} W > ${CFG.maxAbsW} W`);\n}\n\n// Observeer 'sec' seconden; tOn = moment van inschakelen (voor terugval-tijd).\nasync function observe(sec, my, tOn, every = 1) {\n  const end = now() + sec * 1000 * CFG.timeScale;\n  const S = []; let offAt = null, i = 0;\n  while (now() < end) {\n    check(my);\n    const s = sample(); S.push(s); guard(s);\n    if (offAt === null && tOn && s.mode === OPT.off) offAt = secSince(tOn);\n    if (i++ % every === 0) log(`  t+${tOn ? secSince(tOn) : '-'}s  ${fmt(s)}`);\n    await sleep(CFG.sampleMs);\n  }\n  return { S, offAt };\n}\n\nlet kaToggle = false;\nasync function keepalive(my, wdBase, power) {\n  kaToggle = !kaToggle;\n  if (CFG.keepalive === 'power') return write(CFG.ent.power, power, my);\n  if (CFG.keepalive === 'mode')  return write(CFG.ent.mode, OPT.on, my);\n  return write(CFG.ent.wd, kaToggle ? wdBase + 1 : wdBase, my);   // andere waarde -> zeker een write\n}\n\nasync function enable(my, { bmode = OPT.pwr, power = 0, wd = 120, soc = null }) {\n  if (st(CFG.ent.mode) !== OPT.off) throw new Error(`1100 staat niet op '${OPT.off}' (${st(CFG.ent.mode)}) – eerst STOP`);\n  await write(CFG.ent.side, OPT.accu, my);        // 1104 vóór 1100: nooit in AC-modus aan\n  await write(CFG.ent.bmode, bmode, my);\n  if (soc !== null) await write(CFG.ent.soc, soc, my);\n  await write(CFG.ent.power, power, my);\n  await write(CFG.ent.wd, wd, my);                // watchdog vlak vóór aanzetten\n  const tOn = now();\n  await write(CFG.ent.mode, OPT.on, my);\n  return tOn;\n}\n\nasync function safeOff() {\n  if (st(CFG.ent.mode) === undefined) { log('uit: RC-entiteiten niet gevonden, niets geschreven'); return; }\n  node.send([svc(CFG.ent.mode, OPT.off), null]);\n  await sleep(3000);\n  node.send([svc(CFG.ent.power, 0), null]);\n  await sleep(CFG.readbackMs);\n  const ok = st(CFG.ent.mode) === OPT.off && Math.abs(num(CFG.ent.power) || 0) < 0.051;\n  log(`uit: 1100=${st(CFG.ent.mode)}, 1109=${st(CFG.ent.power)} ${ok ? 'OK' : '<< CONTROLEER HANDMATIG'}`);\n}\n\nfunction precheck() {\n  const ids = [...Object.values(CFG.ent), CFG.meas.pBatt, CFG.meas.soc, CFG.meas.pGrid, CFG.meas.pShunt].filter(Boolean);\n  const missing = ids.filter(id => st(id) === undefined);\n  if (missing.length) throw new Error('entiteit(en) niet gevonden, pas de tab-variabelen aan: ' + missing.join(', '));\n  // Een actieve remote executor zou de tests direct overschrijven\n  const rs = global.get(`${CFG.prefix}_state`);\n  if (rs && rs.enabled && !rs.dry_run && now() - (rs.ts || 0) < 60000)\n    throw new Error('de remote executor staat AAN (live) – zet hem eerst UIT');\n}\n\n// ---------------------------------------------------------------- tests\nconst TESTS = {\n  async T0() {   // alleen lezen\n    const out = {};\n    for (const [k, id] of Object.entries({ ...CFG.ent, ...CFG.meas })) if (id) out[k] = st(id);\n    result('T0', out);\n  },\n\n  async T1(my) {   // watchdog-terugval met vermogen 0\n    const tOn = await enable(my, { power: 0, wd: 60 });\n    const { S, offAt } = await observe(100, my, tOn);\n    result('T1', { watchdog_s: 60, terugval_na_s: offAt,\n      ok: offAt !== null && offAt >= 45 && offAt <= 85,\n      accu_gem_W_tijdens_aan: avg(S.filter(s => s.mode === OPT.on).map(s => s.pBatt)) });\n  },\n\n  async T2(my) { await signTest(my, 5, 'T2'); },\n  async T3(my) { await signTest(my, 10, 'T3'); },\n\n  async T4a(my) { await kaTest(my, 'a', () => write(CFG.ent.wd, 61, my)); },\n  async T4b(my) { await kaTest(my, 'b', () => write(CFG.ent.power, 0.1, my)); },\n  async T4c(my) { await kaTest(my, 'c', () => write(CFG.ent.mode, OPT.on, my)); },\n\n  async T5a(my) {   // ontladen tot SOC−3 (vlak bij het doel knijpt de Deye af)\n    const soc = Math.round(num(CFG.meas.soc));\n    await socTest(my, 'T5a', 5, soc - 3, s => s.soc <= soc - 3, s => s.soc < soc - 4);\n  },\n  async T5b(my) {   // laden tot SOC+1\n    const soc = Math.round(num(CFG.meas.soc));\n    await socTest(my, 'T5b', -5, soc + 1, s => s.soc >= soc + 1, s => s.soc > soc + 2);\n  },\n  async T5c(my) {   // tegenstrijdig: laden gevraagd, doel onder SOC → hoort niets te doen\n    const soc = Math.round(num(CFG.meas.soc));\n    const base = avg((await observe(15, my, null)).S.map(s => s.pBatt));\n    const tOn = await enable(my, { bmode: OPT.pwrSoc, power: -5, soc: soc - 5, wd: 120 });\n    const { S } = await observe(40, my, tOn);\n    const a = avg(S.slice(2).map(s => s.pBatt));\n    result('T5c', { voor_W: base, tijdens_W: a, verwacht: 'geen geforceerd laden (accu ~0 W, huis uit het net)' });\n  },\n\n  async T6(my) {   // BMS-limiet wint van remote-setpoint\n    let orig = null;\n    if (CFG.dcl) { orig = num(CFG.dcl); await write(CFG.dcl, CFG.dclTestA, my); }\n    else { log(`LET OP: zet de ontlaadstroomgrens van je BMS nu handmatig op ~${CFG.dclTestA} A (test start over 20 s)`); await sleep(20000); }\n    try {\n      const tOn = await enable(my, { power: 10, wd: 120 });\n      const { S } = await observe(45, my, tOn);\n      const a = avg(S.slice(2).map(s => s.pBatt));\n      result('T6', { gevraagd_W: 10 * CFG.wPerPct, gemeten_W: a,\n        verwacht: `begrensd op ~${CFG.dclTestA} A × accuspanning` });\n    } finally {\n      if (CFG.dcl && orig !== null) { node.send([svc(CFG.dcl, orig), null]); log(`DCL terug naar ${orig}`); }\n      else log('Vergeet de ontlaadstroomgrens niet terug te zetten!');\n    }\n  },\n};\n\nasync function signTest(my, pct, name) {\n  const tOn = await enable(my, { power: pct, wd: 120 });\n  const plus = await observe(30, my, tOn);\n  await write(CFG.ent.power, -pct, my);\n  const min = await observe(30, my, tOn);\n  const aP = avg(plus.S.slice(2).map(s => s.pBatt)), aM = avg(min.S.slice(2).map(s => s.pBatt));\n  const out = { gevraagd_W: pct * CFG.wPerPct, plus_accu_W: aP, min_accu_W: aM,\n    W_per_pct: aP !== null && aM !== null ? Math.round((aP - aM) / (2 * pct)) : null,\n    teken: aP > 0 && aM < 0 ? '+ = ontladen (zoals verwacht)' : 'AFWIJKEND – bekijk log en BATT_POWER_SIGN' };\n  if (CFG.meas.pShunt) {\n    out.plus_shunt_W = avg(plus.S.slice(2).map(s => s.pShunt));\n    out.min_shunt_W = avg(min.S.slice(2).map(s => s.pShunt));\n  }\n  result(name, out);\n}\n\nasync function kaTest(my, v, act) {\n  const tOn = await enable(my, { power: 0, wd: 60 });\n  const a = await observe(40, my, tOn);\n  log(`keepalive-variant ${v} op t+${secSince(tOn)}s`);\n  await act();\n  const b = await observe(55, my, tOn);\n  const offAt = a.offAt ?? b.offAt;\n  result('T4' + v, { variant: { a: '1101 herschrijven', b: '1109 herschrijven', c: '1100 herschrijven' }[v],\n    terugval_na_s: offAt, verlengd: offAt === null || offAt > 85 });\n}\n\nasync function socTest(my, name, pct, target, reached, overshoot) {\n  const wd = 120;\n  const tOn = await enable(my, { bmode: OPT.pwrSoc, power: pct, soc: target, wd });\n  const end = now() + 30 * 60000 * CFG.timeScale;\n  let lastKa = now(), stable = 0, i = 0, s;\n  while (now() < end) {\n    check(my);\n    s = sample(); guard(s);\n    if (i++ % 6 === 0) log(`  t+${secSince(tOn)}s  ${fmt(s)}`);\n    if (s.mode === OPT.off) throw new Error('remote viel onverwacht uit (keepalive werkt niet? zie T4)');\n    if (overshoot(s)) { result(name, { doel: target, soc: s.soc, ok: false, fout: 'doorgeschoten' }); return; }\n    stable = reached(s) && s.pBatt !== null && Math.abs(s.pBatt) < 100 ? stable + 1 : 0;\n    if (stable >= 3) { result(name, { doel: target, soc: s.soc, gestopt_na_s: secSince(tOn), ok: true }); return; }\n    if (now() - lastKa > 60000 * CFG.timeScale) { await keepalive(my, wd, pct); lastKa = now(); }\n    await sleep(CFG.sampleMs);\n  }\n  result(name, { doel: target, soc: s && s.soc, ok: false, fout: 'doel niet binnen 30 min' });\n}\n\n// ---------------------------------------------------------------- dispatcher\nconst topic = String(msg.topic || '');\n\nif (topic === 'log') {\n  return [null, { payload: { resultaten: flow.get('rc_results') || {}, log: flow.get('rc_log') || [] } }];\n}\nif (topic === 'clear') { flow.set('rc_log', []); flow.set('rc_results', {}); node.status({}); return null; }\n\nif (topic === 'STOP') {\n  context.set('runId', -1);\n  log('STOP gedrukt');\n  safeOff().then(() => node.status({ fill: 'red', shape: 'ring', text: 'gestopt' }));\n  return null;\n}\n\nif (topic === 'tick') {   // statusregel; veiligheidsstop alleen tijdens een test (niet ingrijpen op een draaiende executor)\n  const s = sample();\n  if (!context.get('busy')) {\n    node.status({ fill: s.mode === OPT.on ? 'yellow' : 'grey', shape: 'dot',\n      text: `${s.mode || '?'} | rc ${s.rc}% | accu ${s.pBatt} W | SOC ${s.soc}%` });\n    return null;\n  }\n  if (s.mode === OPT.on && s.pBatt !== null && Math.abs(s.pBatt) > CFG.maxAbsW) {\n    context.set('runId', -1);\n    log(`VEILIGHEIDSSTOP (tick): accu ${s.pBatt} W`);\n    safeOff();\n  }\n  return null;\n}\n\nif (!TESTS[topic]) { node.warn('onbekende test: ' + topic); return null; }\nif (context.get('busy')) { node.warn('er loopt al een test – eerst STOP of wachten'); return null; }\n\nconst my = now();\ncontext.set('runId', my);\ncontext.set('busy', true);\nnode.status({ fill: 'blue', shape: 'dot', text: `${topic} loopt…` });\nlog(`===== start ${topic} =====`);\n\n(async () => {\n  let failed = false, started = false;\n  try { precheck(); started = true; await TESTS[topic](my); }\n  catch (e) { failed = true; log(`AFGEBROKEN: ${e.message}`); }\n  finally {\n    if (topic !== 'T0' && started) await safeOff();\n    context.set('busy', false);\n    node.status({ fill: failed ? 'red' : 'green', shape: 'dot', text: `${topic} ${failed ? 'afgebroken' : 'klaar'}` });\n    log(`===== einde ${topic} =====`);\n  }\n})();\nreturn null;\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 380,
+        "wires": [
+            [
+                "28f5da928a98db07"
+            ],
+            [
+                "4999a2448fdc4c47",
+                "e8fd43c1acf320b9"
+            ]
+        ]
+    },
+    {
+        "id": "28f5da928a98db07",
+        "type": "api-call-service",
+        "z": "7d417cf5252976f0",
+        "name": "HA call (RC)",
+        "server": "",
+        "version": 7,
+        "debugenabled": false,
+        "action": "",
+        "floorId": [],
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "labelId": [],
+        "data": "",
+        "dataType": "jsonata",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "blockInputOverrides": false,
+        "domain": "",
+        "service": "",
+        "x": 760,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4999a2448fdc4c47",
+        "type": "debug",
+        "z": "7d417cf5252976f0",
+        "name": "RC resultaten + log",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "e8fd43c1acf320b9",
+        "type": "file",
+        "z": "7d417cf5252976f0",
+        "name": "rc-test.log",
+        "filename": "rc-test.log",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 760,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    }
+]
